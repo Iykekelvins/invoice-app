@@ -3,6 +3,7 @@ import { League_Spartan } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
+import { metaDataOptions } from '@/lib/metadata';
 
 import './globals.css';
 
@@ -16,6 +17,7 @@ const leagueSpartan = League_Spartan({
 export const metadata: Metadata = {
 	title: 'Invoice App',
 	description: 'A simple invoicing app',
+	...metaDataOptions,
 };
 
 export default function RootLayout({
