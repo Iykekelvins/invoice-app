@@ -26,7 +26,7 @@ export default function RootLayout({
 			<body className={`${leagueSpartan.variable}  antialiased`}>
 				<ThemeProvider
 					attribute='class'
-					defaultTheme='system'
+					defaultTheme='light'
 					enableSystem
 					disableTransitionOnChange>
 					<main>{children}</main>
