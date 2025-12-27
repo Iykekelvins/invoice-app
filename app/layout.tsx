@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { League_Spartan } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
 
 import './globals.css';
 
@@ -29,7 +31,10 @@ export default function RootLayout({
 					defaultTheme='light'
 					enableSystem
 					disableTransitionOnChange>
-					<main>{children}</main>
+					<SidebarProvider>
+						<AppSidebar />
+						<main>{children}</main>
+					</SidebarProvider>
 				</ThemeProvider>
 			</body>
 		</html>
