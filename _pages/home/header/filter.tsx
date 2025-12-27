@@ -5,15 +5,13 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export default function Status() {
+export default function Filter() {
 	const [open, setOpen] = useState(false);
 	const [status, setStatus] = useState('');
 

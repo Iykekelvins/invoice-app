@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import Status from './status';
+
+import Filter from './filter';
 
 export default function Header() {
 	return (
@@ -12,7 +13,7 @@ export default function Header() {
 			</div>
 
 			<div className='flex items-center gap-4.5 md:gap-[2.534rem]'>
-				<Status />
+				<Filter />
 				<Button className='pl-2'>
 					<span
 						className='flex items-center justify-center bg-white rounded-full
