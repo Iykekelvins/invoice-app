@@ -6,6 +6,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { metaDataOptions } from '@/lib/metadata';
 
 import './globals.css';
+import Navbar from '@/shared/navbar';
 
 const leagueSpartan = League_Spartan({
 	variable: '--font-league-spartan',
@@ -35,7 +36,13 @@ export default function RootLayout({
 					disableTransitionOnChange>
 					<SidebarProvider>
 						<AppSidebar />
-						<main>{children}</main>
+						<div
+							className='flex-1 flex flex-col min-h-screen
+						px-6 md:px-12 max-w-182.5 mx-auto
+						'>
+							<Navbar />
+							<main>{children}</main>
+						</div>
 					</SidebarProvider>
 				</ThemeProvider>
 			</body>

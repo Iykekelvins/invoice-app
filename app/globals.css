@@ -8,9 +8,11 @@
 	--foreground: #0c0e16;
 	--sidebar: #373b53;
 	--purple: #7c5dfa;
+	--purple-hover: #9277ff;
 	--white-bg: #ffffff;
 	--grey: #858bb2;
 	--grey-04: #f9fafe;
+	--grey-05: #dfe3fa;
 	--grey-06: #888eb0;
 	--grey-07: #7e88c3;
 	--grey-08: #0c0e16;
@@ -23,6 +25,7 @@
 	--draft-bg: #373b530f;
 	--red: #ec5757;
 	--input-bg: #ffffff;
+	--input-border: #dfe3fa;
 	--sidebar-foreground: hsl(240 5.3% 26.1%);
 	--sidebar-primary: hsl(240 5.9% 10%);
 	--sidebar-primary-foreground: hsl(0 0% 98%);
@@ -39,11 +42,13 @@
 	--white-bg: #1e2139;
 	--grey: #ffffff;
 	--grey-04: #252945;
+	--grey-05: #1e2139;
 	--grey-06: #dfe3fa;
 	--grey-07: #dfe3fa;
 	--grey-08: #ffffff;
 	--grey-08-bg: #0c0e16;
 	--input-bg: #1e2139;
+	--input-border: #252945;
 	--sidebar-foreground: hsl(240 4.8% 95.9%);
 	--sidebar-primary: hsl(224.3 76.3% 48%);
 	--sidebar-primary-foreground: hsl(0 0% 100%);
@@ -59,8 +64,10 @@
 	--color-sidebar: var(--sidebar);
 	--color-white-bg: var(--white-bg);
 	--color-purple: var(--purple);
+	--color-purple-hover: var(--purple-hover);
 	--color-grey: var(--grey);
 	--color-grey-04: var(--grey-04);
+	--color-grey-05: var(--grey-05);
 	--color-grey-06: var(--grey-06);
 	--color-grey-07: var(--grey-07);
 	--color-grey-08: var(--grey-08);
@@ -93,13 +100,12 @@ body {
 	color: var(--foreground);
 	font-family: var(--font-league-spartan);
 	line-height: 1;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
 }
 
 main {
 	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 button,
