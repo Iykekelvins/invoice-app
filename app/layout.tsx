@@ -18,6 +18,7 @@ const leagueSpartan = League_Spartan({
 export const metadata: Metadata = {
 	title: 'Invoice App',
 	description: 'A simple invoicing app',
+	metadataBase: new URL('https://invoice-app-tau-sage.vercel.app/'),
 	...metaDataOptions,
 };
 

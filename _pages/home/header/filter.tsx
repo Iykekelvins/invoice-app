@@ -20,10 +20,12 @@ export default function Filter() {
 	return (
 		<DropdownMenu open={open} onOpenChange={setOpen}>
 			<DropdownMenuTrigger
-				className='text-[0.938rem] font-bold tracking-tight
-      flex items-center gap-3.5
+				className='text-15 font-bold tracking-tight
+      flex items-center gap-3 md:gap-3.5
       '>
-				<span>Filter by status</span>
+				<span>
+					Filter <span className='hidden md:flex'>by status</span>
+				</span>
 				<ChevronDown
 					color='var(--purple)'
 					strokeWidth={3}
@@ -57,7 +59,7 @@ export default function Filter() {
 								st === status && 'border-purple bg-purple'
 							)}
 						/>
-						<label htmlFor={st} className='text-[0.938rem] font-bold cursor-pointer'>
+						<label htmlFor={st} className='text-15 font-bold cursor-pointer'>
 							{st}
 						</label>
 					</DropdownMenuItem>

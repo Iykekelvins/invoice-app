@@ -1,20 +1,25 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import Filter from './filter';
+import NewInvoice from '../new-invoice';
 
 export default function Header() {
+	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
+
 	return (
 		<div className='flex items-center justify-between'>
 			<div>
 				<h1 className='text-2xl md:text-4xl font-bold tracking-tight'>Invoices</h1>
-				<p className='text-grey-06 text-[0.813rem] font-medium mt-1.5'>
-					No invoices
-				</p>
+				<p className='text-grey-06 text-13 font-medium md:mt-1.5'>No invoices</p>
 			</div>
 
 			<div className='flex items-center gap-4.5 md:gap-[2.534rem]'>
 				<Filter />
-				<Button className='pl-2'>
+
+				<Button className='pl-2' onClick={() => setOpenInvoiceForm(true)}>
 					<span
 						className='flex items-center justify-center bg-white rounded-full
 					size-8
@@ -36,6 +41,11 @@ export default function Header() {
 					</span>
 				</Button>
 			</div>
+
+			<NewInvoice
+				openInvoiceForm={openInvoiceForm}
+				setOpenInvoiceForm={setOpenInvoiceForm}
+			/>
 		</div>
 	);
 }
