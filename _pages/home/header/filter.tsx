@@ -24,7 +24,7 @@ export default function Filter() {
       flex items-center gap-3 md:gap-3.5
       '>
 				<span>
-					Filter <span className='hidden md:flex'>by status</span>
+					Filter <span className='hidden md:inline'>by status</span>
 				</span>
 				<ChevronDown
 					color='var(--purple)'
