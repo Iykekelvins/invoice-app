@@ -173,6 +173,7 @@ export default function InvoiceForm({
 							qty: +item.qty,
 						};
 					}),
+					status: 'pending',
 				});
 
 				toast.success(result.message);

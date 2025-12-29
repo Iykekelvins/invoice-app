@@ -11,9 +11,14 @@ import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export default function Filter() {
+export default function Filter({
+	status,
+	setStatus,
+}: {
+	status: 'pending' | 'paid' | '';
+	setStatus: (e: 'pending' | 'paid' | '') => void;
+}) {
 	const [open, setOpen] = useState(false);
-	const [status, setStatus] = useState('');
 
 	const STATUSES = ['Draft', 'Pending', 'Paid'];
 
@@ -51,7 +56,7 @@ export default function Filter() {
 						<Checkbox
 							id={st}
 							checked={status === st}
-							onCheckedChange={() => setStatus((prev) => (prev === st ? '' : st))}
+							onCheckedChange={() => setStatus(status === st ? '' : status)}
 							className={cn(
 								'rounded-xs border-2 border-grey-05 bg-grey-05 size-5',
 								'group-hover:border-purple transition-all duration-300',

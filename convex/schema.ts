@@ -30,6 +30,8 @@ export default defineSchema({
 		payment_terms: v.string(),
 		project_description: v.string(),
 
+		status: v.union(v.literal('pending'), v.literal('paid')),
+
 		items: v.array(
 			v.object({
 				item_name: v.string(),
@@ -37,5 +39,7 @@ export default defineSchema({
 				price: v.number(),
 			})
 		),
-	}).index('by_user', ['userId']),
+	})
+		.index('by_user', ['userId'])
+		.index('by_user_and_status', ['userId', 'status']),
 });

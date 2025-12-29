@@ -1,28 +1,40 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
 import { Button } from '@/components/ui/button';
+import { InvoiceProps } from '@/types';
 
 import Filter from './filter';
 import InvoiceForm from '@/components/invoice-form';
 
-export default function Header() {
+export default function Header({
+	invoices,
+	status,
+	setStatus,
+}: {
+	invoices: InvoiceProps[];
+	status: 'pending' | 'paid' | '';
+	setStatus: (e: 'pending' | 'paid' | '') => void;
+}) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
-	const invoices = useQuery(api.invoices.getInvoices);
 
 	return (
 		<div className='flex items-center justify-between'>
 			<div>
 				<h1 className='text-2xl md:text-4xl font-bold tracking-tight'>Invoices</h1>
 				<p className='text-grey-06 text-13 font-medium md:mt-1.5'>
-					{invoices?.length === 0 ? 'No invoices' : invoices?.length}
+					{!invoices
+						? '...'
+						: invoices?.length === 0
+							? 'No invoices'
+							: invoices.length === 1
+								? "There's only 1 invoice"
+								: `There are ${invoices.length} total invoices`}
 				</p>
 			</div>
 
 			<div className='flex items-center gap-4.5 md:gap-[2.534rem]'>
-				<Filter />
+				<Filter status={status} setStatus={setStatus} />
 
 				<Button className='pl-2' onClick={() => setOpenInvoiceForm(true)}>
 					<span
