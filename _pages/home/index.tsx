@@ -4,7 +4,7 @@ import EmptyState from './empty-state';
 
 const Homepage = () => {
 	return (
-		<div className='pt-8 md:pt-15 xl:pt-[4.813rem] flex flex-col flex-1'>
+		<div className='pt-8 md:pt-20 xl:pt-[4.813rem] flex flex-col flex-1'>
 			<Header />
 			<EmptyState />
 			{/* <ul className='mt-8 md:mt-14 xl:mt-16 grid gap-4'>

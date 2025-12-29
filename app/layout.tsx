@@ -35,13 +35,13 @@ export default function RootLayout({
 					defaultTheme='light'
 					enableSystem
 					disableTransitionOnChange>
+					<Navbar />
 					<SidebarProvider>
 						<AppSidebar />
 						<div
 							className='flex-1 flex flex-col min-h-screen
 						px-6 xl:px-0 max-w-182.5 mx-auto
 						'>
-							<Navbar />
 							<main>{children}</main>
 						</div>
 					</SidebarProvider>
