@@ -8,14 +8,19 @@ import {
 	SidebarFooter,
 	SidebarHeader,
 } from '@/components/ui/sidebar';
+import { SignOutButton, useUser } from '@clerk/nextjs';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Button } from './ui/button';
 
 import Image from 'next/image';
 import Link from 'next/link';
 
 export function AppSidebar() {
 	const { theme, setTheme } = useTheme();
+	const { user } = useUser();
 
 	const [mounted, setMounted] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	// The hydration error is happening because useTheme() from next-themes returns undefined during
 	// server-side rendering, but returns the actual theme value on the client side
@@ -77,7 +82,52 @@ export function AppSidebar() {
 				</button>
 				<span className='bg-[#494E6E] h-px w-full' />
 				<div className='py-6'>
-					<Image src='/user.png' width={40} height={40} alt='user profile picture' />
+					<Popover>
+						<PopoverTrigger>
+							<Image
+								src={user?.imageUrl as string}
+								width={40}
+								height={40}
+								alt='user profile picture'
+								className='rounded-full'
+							/>
+						</PopoverTrigger>
+						<PopoverContent
+							align='start'
+							className='bg-white-bg p-4 z-52 shadow-[0px_10px_10px_-10px_#48549F1A]'>
+							<p className='text-15'>{user?.fullName}</p>
+							<SignOutButton redirectUrl='/auth'>
+								<Button
+									variant={'destructive'}
+									className='h-10! mt-4'
+									onClick={() => setLoading(true)}
+									disabled={loading}>
+									Sign out
+									{loading && (
+										<svg
+											className='animate-spin h-5 w-5 text-white'
+											xmlns='http://www.w3.org/2000/svg'
+											fill='none'
+											viewBox='0 0 24 24'>
+											<circle
+												className='opacity-25'
+												cx='12'
+												cy='12'
+												r='10'
+												stroke='currentColor'
+												strokeWidth='4'
+											/>
+											<path
+												className='opacity-75'
+												fill='currentColor'
+												d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+											/>
+										</svg>
+									)}
+								</Button>
+							</SignOutButton>
+						</PopoverContent>
+					</Popover>
 				</div>
 			</SidebarFooter>
 		</Sidebar>

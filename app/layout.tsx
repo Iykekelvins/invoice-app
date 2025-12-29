@@ -5,7 +5,6 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import { metaDataOptions } from '@/lib/metadata';
 
 import './globals.css';
-import Navbar from '@/shared/navbar';
 
 const leagueSpartan = League_Spartan({
 	variable: '--font-league-spartan',
@@ -35,14 +34,7 @@ export default function RootLayout({
 						defaultTheme='light'
 						enableSystem
 						disableTransitionOnChange>
-						<Navbar />
-
-						<div
-							className='flex-1 flex flex-col min-h-screen
-						px-6 xl:px-0 max-w-195.5 mx-auto
-						'>
-							<main>{children}</main>
-						</div>
+						<main>{children}</main>
 					</ThemeProvider>
 				</ConvexClientProvider>
 			</body>
