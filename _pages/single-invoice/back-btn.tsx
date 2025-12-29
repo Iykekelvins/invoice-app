@@ -8,7 +8,7 @@ export default function BackBtn() {
 
 	return (
 		<button
-			className='flex items-center gap-6 text-15 font-bold'
+			className='flex items-center gap-5 -ml-4 text-15 font-bold'
 			onClick={() => router.back()}>
 			<ChevronLeftIcon color='var(--purple)' />
 			Go back
