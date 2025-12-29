@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 
 import Image from 'next/image';
@@ -7,6 +8,19 @@ import Link from 'next/link';
 
 export default function Navbar() {
 	const { theme, setTheme } = useTheme();
+
+	const [mounted, setMounted] = useState(false);
+
+	// The hydration error is happening because useTheme() from next-themes returns undefined during
+	// server-side rendering, but returns the actual theme value on the client side
+
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setMounted(true);
+		}, 100);
+
+		return () => clearTimeout(timeout);
+	}, []);
 
 	return (
 		<nav
@@ -18,9 +32,10 @@ export default function Navbar() {
 			</Link>
 
 			<div className='flex items-center gap-8 mr-6 self-stretch'>
-				<button
-					onClick={() => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))}>
-					{theme === 'dark' ? (
+				<button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+					{!mounted ? (
+						<div />
+					) : theme === 'dark' ? (
 						<svg
 							width='10'
 							height='10'
