@@ -7,6 +7,7 @@ import { api } from '@/convex/_generated/api';
 import EmptyState from './empty-state';
 import Spinner from '@/components/spinner';
 import Header from './header';
+import Invoice from './invoice';
 
 export default function Main() {
 	const [status, setStatus] = useState<'pending' | 'paid' | ''>('');
@@ -26,7 +27,11 @@ export default function Main() {
 			) : invoices.length === 0 ? (
 				<EmptyState />
 			) : (
-				<ul className='mt-8 md:mt-14 xl:mt-16 grid gap-4'></ul>
+				<ul className='mt-8 md:mt-14 xl:mt-16 grid gap-4'>
+					{invoices.map((inv) => (
+						<Invoice key={inv._id} {...inv} />
+					))}
+				</ul>
 			)}
 		</>
 	);

@@ -20,7 +20,7 @@ export default function Filter({
 }) {
 	const [open, setOpen] = useState(false);
 
-	const STATUSES = ['Draft', 'Pending', 'Paid'];
+	const STATUSES = ['pending', 'paid'];
 
 	return (
 		<DropdownMenu open={open} onOpenChange={setOpen}>
@@ -56,7 +56,9 @@ export default function Filter({
 						<Checkbox
 							id={st}
 							checked={status === st}
-							onCheckedChange={() => setStatus(status === st ? '' : status)}
+							onCheckedChange={() =>
+								setStatus(status === st ? '' : (st as 'pending' | 'paid'))
+							}
 							className={cn(
 								'rounded-xs border-2 border-grey-05 bg-grey-05 size-5',
 								'group-hover:border-purple transition-all duration-300',
@@ -64,7 +66,9 @@ export default function Filter({
 								st === status && 'border-purple bg-purple'
 							)}
 						/>
-						<label htmlFor={st} className='text-15 font-bold cursor-pointer'>
+						<label
+							htmlFor={st}
+							className='text-15 font-bold cursor-pointer capitalize'>
 							{st}
 						</label>
 					</DropdownMenuItem>
