@@ -13,12 +13,14 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				primary: 'bg-purple hover:bg-purple-hover text-white',
-				secondary: 'bg-grey-05 hover:bg-grey-04-hover text-grey-07',
+				secondary:
+					'bg-grey-05 dark:bg-[#252945] hover:bg-grey-04-hover text-grey-07',
 				tertiary: 'bg-[#373B53] hover:bg-[#0C0E16] text-grey-06 dark:text-grey-05',
+				destructive: 'bg-red hover:bg-[#FF9797] text-white',
 				ghost: '',
 			},
 			size: {
-				default: 'h-[2.75rem] md:h-12 rounded-full px-4',
+				default: 'h-[2.75rem] md:h-12 rounded-full px-6',
 				sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
 				lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
 				icon: 'size-9',

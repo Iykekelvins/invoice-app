@@ -676,7 +676,7 @@ export default function NewInvoice({
 				</div>
 
 				<div
-					className='absolute bottom-0 left-0 w-full bg-[#F9FAFE] rounded-tr-[20px] 
+					className='absolute bottom-0 left-0 w-full bg-background rounded-tr-[20px] 
 					flex items-center justify-between shadow-[0px_10px_20px_0px_#00000040]
 					py-7.5 pl-6 md:pl-14 lg:pl-[9.938rem] pr-6 md:pr-14
 				'>
