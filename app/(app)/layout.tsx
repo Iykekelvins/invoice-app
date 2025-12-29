@@ -1,19 +1,12 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { withAuth } from '../withAuth';
 
 import Navbar from '@/shared/navbar';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
-	const { isSignedIn } = useUser();
-
-	if (!isSignedIn) {
-		return redirect('/auth');
-	}
-
 	return (
 		<>
 			<Navbar />
@@ -30,4 +23,4 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-export default AppLayout;
+export default withAuth(AppLayout);
