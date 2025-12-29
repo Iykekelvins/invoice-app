@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import Filter from './filter';
-import NewInvoice from '../new-invoice';
+import InvoiceForm from '@/components/invoice-form';
 
 export default function Header() {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
@@ -42,7 +42,7 @@ export default function Header() {
 				</Button>
 			</div>
 
-			<NewInvoice
+			<InvoiceForm
 				openInvoiceForm={openInvoiceForm}
 				setOpenInvoiceForm={setOpenInvoiceForm}
 			/>

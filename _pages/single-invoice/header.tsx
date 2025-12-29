@@ -1,10 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { getStatusTag } from '@/components/status';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import InvoiceForm from '@/components/invoice-form';
+
 export default function Header({ position }: { position: 'top' | 'bottom' }) {
+	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
+
 	return (
 		<div
 			className={cn(
@@ -32,12 +37,20 @@ export default function Header({ position }: { position: 'top' | 'bottom' }) {
 					position === 'top' && 'hidden md:flex items-center gap-2',
 					position === 'bottom' && 'flex items-center justify-between gap-2'
 				)}>
-				<Button variant={'secondary'}>Edit</Button>
+				<Button variant={'secondary'} onClick={() => setOpenInvoiceForm(true)}>
+					Edit
+				</Button>
 				<Button variant={'destructive'} className='px-5'>
 					Delete
 				</Button>
 				<Button>Mark as Paid</Button>
 			</div>
+
+			<InvoiceForm
+				openInvoiceForm={openInvoiceForm}
+				setOpenInvoiceForm={setOpenInvoiceForm}
+				invoice
+			/>
 		</div>
 	);
 }

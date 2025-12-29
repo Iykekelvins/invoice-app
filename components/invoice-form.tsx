@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { z } from 'zod';
@@ -98,12 +99,14 @@ const PAYMENT_TERMS = [
 	},
 ];
 
-export default function NewInvoice({
+export default function InvoiceForm({
 	openInvoiceForm,
 	setOpenInvoiceForm,
+	invoice,
 }: {
 	openInvoiceForm: boolean;
 	setOpenInvoiceForm: (e: boolean) => void;
+	invoice?: any;
 }) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -164,7 +167,15 @@ export default function NewInvoice({
 						<ChevronLeftIcon color='var(--purple)' />
 						Go back
 					</button>
-					<SheetTitle className='text-2xl font-bold'>New Invoice</SheetTitle>
+					<SheetTitle className='text-2xl font-bold'>
+						{!invoice ? (
+							'New Invoice'
+						) : (
+							<span>
+								Edit <span className='text-grey-06'>#</span>XM9141
+							</span>
+						)}
+					</SheetTitle>
 
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className='mt-8'>
@@ -361,12 +372,13 @@ export default function NewInvoice({
 												</div>
 
 												<Popover>
-													<PopoverTrigger asChild>
+													<PopoverTrigger asChild disabled={invoice}>
 														<FormControl>
 															<button
 																className={cn(
 																	`form-input transition-all duration-300 ease-in-out
-															 		flex items-center justify-between px-3
+															 		flex items-center justify-between px-3 disabled:cursor-not-allowed!
+																	disabled:opacity-70
 																	`,
 																	form.formState.errors.invoice_date && 'border-red!'
 																)}>
