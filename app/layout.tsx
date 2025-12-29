@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { League_Spartan } from 'next/font/google';
+import { ConvexClientProvider } from '@/providers/convex-client-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
@@ -30,22 +31,24 @@ export default function RootLayout({
 	return (
 		<html lang='en' suppressHydrationWarning>
 			<body className={`${leagueSpartan.variable}  antialiased`}>
-				<ThemeProvider
-					attribute='class'
-					defaultTheme='light'
-					enableSystem
-					disableTransitionOnChange>
-					<Navbar />
-					<SidebarProvider>
-						<AppSidebar />
-						<div
-							className='flex-1 flex flex-col min-h-screen
+				<ConvexClientProvider>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='light'
+						enableSystem
+						disableTransitionOnChange>
+						<Navbar />
+						<SidebarProvider>
+							<AppSidebar />
+							<div
+								className='flex-1 flex flex-col min-h-screen
 						px-6 xl:px-0 max-w-182.5 mx-auto
 						'>
-							<main>{children}</main>
-						</div>
-					</SidebarProvider>
-				</ThemeProvider>
+								<main>{children}</main>
+							</div>
+						</SidebarProvider>
+					</ThemeProvider>
+				</ConvexClientProvider>
 			</body>
 		</html>
 	);
