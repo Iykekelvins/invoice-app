@@ -2,13 +2,20 @@
 
 import { useState } from 'react';
 import { getStatusTag } from '@/components/status';
+import { InvoiceProps } from '@/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import InvoiceForm from '@/components/invoice-form';
 import DeleteInvoice from './delete-invoice';
 
-export default function Header({ position }: { position: 'top' | 'bottom' }) {
+export default function Header({
+	position,
+	invoice,
+}: {
+	position: 'top' | 'bottom';
+	invoice: InvoiceProps;
+}) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -31,7 +38,7 @@ export default function Header({ position }: { position: 'top' | 'bottom' }) {
 					position === 'bottom' && 'hidden'
 				)}>
 				<h1 className='text-grey text-13 font-medium'>Status</h1>
-				{getStatusTag('pending')}
+				{getStatusTag(invoice.status)}
 			</div>
 
 			<div
