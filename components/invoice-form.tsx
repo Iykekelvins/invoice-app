@@ -2,7 +2,10 @@
 'use client';
 
 import { z } from 'zod';
+import { useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useMutation } from 'convex/react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Form,
@@ -32,6 +35,10 @@ import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon } from 'lucide-react';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
+
+import Spinner from './spinner';
 
 const message = "can't be empty";
 
@@ -65,7 +72,7 @@ const formSchema = z.object({
 		message,
 	}),
 	invoice_date: z.date({ message }),
-	payment_terms: z.string().min(2, {
+	payment_terms: z.string().min(1, {
 		message,
 	}),
 	project_description: z.string().min(2, {
@@ -74,8 +81,8 @@ const formSchema = z.object({
 	items: z.array(
 		z.object({
 			item_name: z.string().min(2, { message }),
-			qty: z.number().int().positive('Quantity must be a positive integer'),
-			price: z.number().positive('Price must be a positive number'),
+			qty: z.any(),
+			price: z.any(),
 		})
 	),
 });
@@ -108,6 +115,8 @@ export default function InvoiceForm({
 	setOpenInvoiceForm: (e: boolean) => void;
 	invoice?: any;
 }) {
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -145,8 +154,36 @@ export default function InvoiceForm({
 		setOpenInvoiceForm(false);
 	};
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values);
+	const createInvoice = useMutation(api.invoices.createInvoice);
+
+	const [loading, setLoading] = useState(false);
+
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		setLoading(true);
+
+		try {
+			if (!invoice) {
+				const result = await createInvoice({
+					...values,
+					invoice_date: values.invoice_date.getTime(),
+					items: values.items.map((item) => {
+						return {
+							item_name: item.item_name,
+							price: +item.price,
+							qty: +item.qty,
+						};
+					}),
+				});
+
+				toast.success(result.message);
+				router.push(`/invoice/${result.invoiceId}`);
+				handleDiscard();
+			}
+		} catch (error: any) {
+			toast.error(error.message || 'Failed to create invoice');
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -469,11 +506,29 @@ export default function InvoiceForm({
 								</div>
 							</div>
 
+							<FormField
+								control={form.control}
+								name='project_description'
+								render={({ field }) => (
+									<FormItem className='mt-6'>
+										<div className='flex items-center justify-between'>
+											<FormLabel className='form-label'>
+												Project Description
+											</FormLabel>
+											<FormMessage className='text-red text-[0.625rem] font-semibold' />
+										</div>
+										<FormControl>
+											<Input className='form-input' {...field} />
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+
 							{/* Item List */}
 							<div className='mt-[2.188rem]'>
 								<h3 className='text-15 text-purple font-bold'>Item List</h3>
 
-								<table className='mt-[0.813rem] w-full hidden md:block'>
+								<table className='mt-[0.813rem] w-full hidden md:table'>
 									<thead>
 										<tr>
 											<th className='text-grey-07 text-13 font-medium text-left'>
@@ -555,7 +610,7 @@ export default function InvoiceForm({
 														<button
 															type='button'
 															onClick={() => remove(idx)}
-															className=''>
+															disabled={items.length === 1}>
 															<svg
 																width='13'
 																height='16'
@@ -647,7 +702,7 @@ export default function InvoiceForm({
 													<button
 														type='button'
 														onClick={() => remove(idx)}
-														className=''>
+														disabled={items.length === 1}>
 														<svg
 															width='13'
 															height='16'
@@ -698,7 +753,10 @@ export default function InvoiceForm({
 
 					<div className='flex items-center gap-2'>
 						<Button variant={'tertiary'}>Save as Draft</Button>
-						<Button onClick={form.handleSubmit(onSubmit)}>Save & Send</Button>
+						<Button onClick={form.handleSubmit(onSubmit)} disabled={loading}>
+							Save & Send
+							{loading && <Spinner />}
+						</Button>
 					</div>
 				</div>
 			</SheetContent>

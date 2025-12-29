@@ -3,6 +3,7 @@ import { League_Spartan } from 'next/font/google';
 import { ConvexClientProvider } from '@/providers/convex-client-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { metaDataOptions } from '@/lib/metadata';
+import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
 
@@ -35,6 +36,7 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange>
 						<main>{children}</main>
+						<Toaster position='top-center' richColors />
 					</ThemeProvider>
 				</ConvexClientProvider>
 			</body>
