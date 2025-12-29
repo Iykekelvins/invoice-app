@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { League_Spartan } from 'next/font/google';
 import { ConvexClientProvider } from '@/providers/convex-client-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
 import { metaDataOptions } from '@/lib/metadata';
 
 import './globals.css';
@@ -38,15 +36,13 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange>
 						<Navbar />
-						<SidebarProvider>
-							<AppSidebar />
-							<div
-								className='flex-1 flex flex-col min-h-screen
-						px-6 xl:px-0 max-w-182.5 mx-auto
+
+						<div
+							className='flex-1 flex flex-col min-h-screen
+						px-6 xl:px-0 max-w-195.5 mx-auto
 						'>
-								<main>{children}</main>
-							</div>
-						</SidebarProvider>
+							<main>{children}</main>
+						</div>
 					</ThemeProvider>
 				</ConvexClientProvider>
 			</body>
