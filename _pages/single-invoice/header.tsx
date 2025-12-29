@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import InvoiceForm from '@/components/invoice-form';
+import DeleteInvoice from './delete-invoice';
 
 export default function Header({ position }: { position: 'top' | 'bottom' }) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
 	return (
 		<div
@@ -40,7 +42,10 @@ export default function Header({ position }: { position: 'top' | 'bottom' }) {
 				<Button variant={'secondary'} onClick={() => setOpenInvoiceForm(true)}>
 					Edit
 				</Button>
-				<Button variant={'destructive'} className='px-5'>
+				<Button
+					variant={'destructive'}
+					className='px-5'
+					onClick={() => setOpenDeleteModal(true)}>
 					Delete
 				</Button>
 				<Button>Mark as Paid</Button>
@@ -50,6 +55,11 @@ export default function Header({ position }: { position: 'top' | 'bottom' }) {
 				openInvoiceForm={openInvoiceForm}
 				setOpenInvoiceForm={setOpenInvoiceForm}
 				invoice
+			/>
+
+			<DeleteInvoice
+				openDeleteModal={openDeleteModal}
+				setOpenDeleteModal={setOpenDeleteModal}
 			/>
 		</div>
 	);
