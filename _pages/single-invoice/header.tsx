@@ -27,7 +27,7 @@ export default function Header({
 	const handleUpdateStatus = async () => {
 		await updateStatus({
 			id: invoice._id,
-			status: 'paid',
+			status: invoice.status === 'paid' ? 'pending' : 'paid',
 		});
 	};
 
@@ -72,11 +72,8 @@ export default function Header({
 					onClick={() => setOpenDeleteModal(true)}>
 					Delete
 				</Button>
-				<Button
-					disabled={invoice.status === 'paid'}
-					className='disabled:opacity-70 disabled:cursor-not-allowed!'
-					onClick={handleUpdateStatus}>
-					Mark as Paid
+				<Button onClick={handleUpdateStatus}>
+					Mark as {invoice.status === 'paid' ? 'Pending' : 'Paid'}
 				</Button>
 			</div>
 
