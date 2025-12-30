@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function EmptyState() {
+export default function EmptyState({ singleInvoice }: { singleInvoice?: boolean }) {
 	return (
 		<div className='flex-1 flex flex-col items-center justify-center'>
 			<Image
@@ -14,8 +14,14 @@ export default function EmptyState() {
 				There is nothing here
 			</h2>
 			<p className='mt-6 text-grey-06 font-medium text-center'>
-				Create an invoice by clicking the <br />
-				<span className='font-bold'>New Invoice</span> button and get started
+				{!singleInvoice ? (
+					<>
+						Create an invoice by clicking the <br />
+						<span className='font-bold'>New Invoice</span> button and get started
+					</>
+				) : (
+					'This invoice does not exist or may have been deleted'
+				)}
 			</p>
 		</div>
 	);

@@ -8,6 +8,7 @@ import { Id } from '@/convex/_generated/dataModel';
 import Header from './header';
 import Info from './info';
 import Spinner from '@/components/spinner';
+import EmptyState from '../home/empty-state';
 
 export default function Main() {
 	const params = useParams();
@@ -16,10 +17,18 @@ export default function Main() {
 		id: params.invoiceId as Id<'invoices'>,
 	});
 
-	if (!invoice) {
+	if (invoice === undefined) {
 		return (
 			<div className='flex-1 flex items-center justify-center'>
 				<Spinner />
+			</div>
+		);
+	}
+
+	if (invoice === null) {
+		return (
+			<div className='flex-1 flex items-center justify-center'>
+				<EmptyState singleInvoice />
 			</div>
 		);
 	}

@@ -89,6 +89,7 @@ export default function Header({
 			<DeleteInvoice
 				openDeleteModal={openDeleteModal}
 				setOpenDeleteModal={setOpenDeleteModal}
+				invoiceId={invoice._id}
 			/>
 		</div>
 	);
