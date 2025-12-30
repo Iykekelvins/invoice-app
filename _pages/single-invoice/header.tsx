@@ -18,6 +18,7 @@ export default function Header({
 }) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [edittingInvoice, setEdittingInvoice] = useState<InvoiceProps | null>(null);
 
 	return (
 		<div
@@ -46,7 +47,12 @@ export default function Header({
 					position === 'top' && 'hidden md:flex items-center gap-2',
 					position === 'bottom' && 'flex items-center justify-between gap-2'
 				)}>
-				<Button variant={'secondary'} onClick={() => setOpenInvoiceForm(true)}>
+				<Button
+					variant={'secondary'}
+					onClick={() => {
+						setOpenInvoiceForm(true);
+						setEdittingInvoice(invoice);
+					}}>
 					Edit
 				</Button>
 				<Button
@@ -61,7 +67,7 @@ export default function Header({
 			<InvoiceForm
 				openInvoiceForm={openInvoiceForm}
 				setOpenInvoiceForm={setOpenInvoiceForm}
-				invoice
+				invoice={edittingInvoice}
 			/>
 
 			<DeleteInvoice

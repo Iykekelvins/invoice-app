@@ -2,7 +2,7 @@
 'use client';
 
 import { z } from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
@@ -39,6 +39,7 @@ import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 
 import Spinner from './spinner';
+import { InvoiceProps } from '@/types';
 
 const message = "can't be empty";
 
@@ -113,7 +114,7 @@ export default function InvoiceForm({
 }: {
 	openInvoiceForm: boolean;
 	setOpenInvoiceForm: (e: boolean) => void;
-	invoice?: any;
+	invoice?: InvoiceProps | null;
 }) {
 	const router = useRouter();
 
@@ -137,6 +138,27 @@ export default function InvoiceForm({
 		},
 	});
 
+	useEffect(() => {
+		if (invoice) {
+			form.reset({
+				bill_from_address: invoice.bill_from_address,
+				bill_from_city: invoice.bill_from_city,
+				bill_from_country: invoice.bill_from_country,
+				bill_from_post_code: invoice.bill_from_post_code,
+				client_address: invoice.client_address,
+				client_city: invoice.client_city,
+				client_country: invoice.client_country,
+				client_email: invoice.client_email,
+				client_name: invoice.client_name,
+				client_post_code: invoice.client_post_code,
+				payment_terms: invoice.payment_terms,
+				invoice_date: new Date(invoice.invoice_date), // Convert timestamp to date string
+				project_description: invoice.project_description,
+				items: invoice.items,
+			});
+		}
+	}, [invoice, form]);
+
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: 'items',
@@ -155,6 +177,7 @@ export default function InvoiceForm({
 	};
 
 	const createInvoice = useMutation(api.invoices.createInvoice);
+	const updateInvoice = useMutation(api.invoices.updateInvoice);
 
 	const [loading, setLoading] = useState(false);
 
@@ -179,9 +202,27 @@ export default function InvoiceForm({
 				toast.success(result.message);
 				router.push(`/invoice/${result.invoiceId}`);
 				handleDiscard();
+			} else {
+				const result = await updateInvoice({
+					...values,
+					invoice_date: values.invoice_date.getTime(),
+					items: values.items.map((item) => {
+						return {
+							item_name: item.item_name,
+							price: +item.price,
+							qty: +item.qty,
+						};
+					}),
+					id: invoice._id,
+				});
+
+				toast.success(result.message);
+				handleDiscard();
 			}
 		} catch (error: any) {
-			toast.error(error.message || 'Failed to create invoice');
+			toast.error(
+				error.message || `Failed to ${!invoice ? 'create' : 'update'} invoice`
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -210,7 +251,8 @@ export default function InvoiceForm({
 							'New Invoice'
 						) : (
 							<span>
-								Edit <span className='text-grey-06'>#</span>XM9141
+								Edit <span className='text-grey-06'>#</span>
+								{invoice._id.toUpperCase()}
 							</span>
 						)}
 					</SheetTitle>
@@ -410,7 +452,7 @@ export default function InvoiceForm({
 												</div>
 
 												<Popover>
-													<PopoverTrigger asChild disabled={invoice}>
+													<PopoverTrigger asChild disabled={invoice !== null}>
 														<FormControl>
 															<button
 																className={cn(
@@ -748,14 +790,20 @@ export default function InvoiceForm({
 					flex items-center justify-between shadow-[0px_10px_20px_0px_#00000040]
 					py-7.5 pl-6 md:pl-14 lg:pl-[9.938rem] pr-6 md:pr-14
 				'>
-					<Button variant={'secondary'} onClick={handleDiscard}>
-						Discard
-					</Button>
+					{!invoice && (
+						<Button variant={'secondary'} onClick={handleDiscard}>
+							Discard
+						</Button>
+					)}
 
-					<div className='flex items-center gap-2'>
-						<Button variant={'tertiary'}>Save as Draft</Button>
+					<div className='flex items-center gap-2 justify-end w-full'>
+						{invoice && (
+							<Button variant={'secondary'} onClick={handleDiscard}>
+								Cancel
+							</Button>
+						)}
 						<Button onClick={form.handleSubmit(onSubmit)} disabled={loading}>
-							Save & Send
+							Save {!invoice ? ' & Send' : 'Changes'}
 							{loading && <Spinner />}
 						</Button>
 					</div>
