@@ -225,3 +225,41 @@ export const deleteInvoice = mutation({
 		};
 	},
 });
+
+export const updateInvoiceStatus = mutation({
+	args: {
+		id: v.id('invoices'),
+		status: v.union(v.literal('pending'), v.literal('paid')),
+	},
+	handler: async (ctx, args) => {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new Error('Not authenticated');
+		}
+
+		const invoice = await ctx.db.get(args.id);
+		if (!invoice) {
+			throw new Error('Invoice not found');
+		}
+
+		const user = await ctx.db
+			.query('users')
+			.withIndex('by_token', (q) =>
+				q.eq('tokenIdentifier', identity.tokenIdentifier)
+			)
+			.unique();
+
+		if (!user || invoice.userId !== user._id) {
+			throw new Error('Unauthorized');
+		}
+
+		await ctx.db.patch(args.id, {
+			status: args.status,
+		});
+
+		return {
+			success: true,
+			message: `Invoice marked as ${args.status}!`,
+		};
+	},
+});

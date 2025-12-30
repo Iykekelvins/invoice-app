@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 import { getStatusTag } from '@/components/status';
 import { InvoiceProps } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -19,6 +21,15 @@ export default function Header({
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [edittingInvoice, setEdittingInvoice] = useState<InvoiceProps | null>(null);
+
+	const updateStatus = useMutation(api.invoices.updateInvoiceStatus);
+
+	const handleUpdateStatus = async () => {
+		await updateStatus({
+			id: invoice._id,
+			status: 'paid',
+		});
+	};
 
 	return (
 		<div
@@ -61,7 +72,12 @@ export default function Header({
 					onClick={() => setOpenDeleteModal(true)}>
 					Delete
 				</Button>
-				<Button>Mark as Paid</Button>
+				<Button
+					disabled={invoice.status === 'paid'}
+					className='disabled:opacity-70 disabled:cursor-not-allowed!'
+					onClick={handleUpdateStatus}>
+					Mark as Paid
+				</Button>
 			</div>
 
 			<InvoiceForm
