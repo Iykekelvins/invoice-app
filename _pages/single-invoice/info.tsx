@@ -21,7 +21,7 @@ export default function Info({ invoice }: { invoice: InvoiceProps }) {
       flex-col md:flex-row gap-7.5
       '>
 				<div>
-					<h2 className='text-15 font-bold uppercase'>
+					<h2 className='text-15 font-bold'>
 						<span className='text-grey-06'>#</span>
 						{invoice._id}
 					</h2>

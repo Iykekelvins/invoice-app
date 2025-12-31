@@ -6,10 +6,15 @@ import { api } from '@/convex/_generated/api';
 import { getStatusTag } from '@/components/status';
 import { InvoiceProps } from '@/types';
 import { Button } from '@/components/ui/button';
+import { addDays, format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { pdf } from '@react-pdf/renderer';
 
 import InvoiceForm from '@/components/invoice-form';
 import DeleteInvoice from './delete-invoice';
+import InvoicePDF from '@/components/invoice-pdf';
+import Spinner from '@/components/spinner';
+import { DownloadIcon } from 'lucide-react';
 
 export default function Header({
 	position,
@@ -21,6 +26,16 @@ export default function Header({
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [edittingInvoice, setEdittingInvoice] = useState<InvoiceProps | null>(null);
+	const [isDownloading, setIsDownloading] = useState(false);
+
+	const due_date = format(
+		addDays(new Date(invoice.invoice_date), +invoice.payment_terms),
+		'PP'
+	);
+
+	const amount_due = `N ${invoice.items
+		.reduce((sum, item) => sum + item.qty * item.price, 0)
+		.toLocaleString()}`;
 
 	const updateStatus = useMutation(api.invoices.updateInvoiceStatus);
 
@@ -29,6 +44,27 @@ export default function Header({
 			id: invoice._id,
 			status: invoice.status === 'paid' ? 'pending' : 'paid',
 		});
+	};
+
+	const handleDownloadPDF = async () => {
+		setIsDownloading(true);
+
+		try {
+			const blob = await pdf(
+				<InvoicePDF invoice={{ ...invoice, payment_terms: due_date, amount_due }} />
+			).toBlob();
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = `invoice-${invoice._id}.pdf`;
+			link.click();
+
+			URL.revokeObjectURL(url);
+		} catch (error) {
+			console.log(error, 'Failed to download PDF');
+		} finally {
+			setIsDownloading(false);
+		}
 	};
 
 	return (
@@ -50,7 +86,16 @@ export default function Header({
 					position === 'bottom' && 'hidden'
 				)}>
 				<h1 className='text-grey text-13 font-medium'>Status</h1>
-				{getStatusTag(invoice.status)}
+				<div className='flex items-center gap-2'>
+					{getStatusTag(invoice.status)}
+					<Button
+						className='bg-paid hover:bg-paid-bg hover:text-paid md:hidden gap-2'
+						onClick={handleDownloadPDF}
+						disabled={isDownloading}>
+						<DownloadIcon size={20} /> PDF
+						{isDownloading && <Spinner />}
+					</Button>
+				</div>
 			</div>
 
 			<div
@@ -74,6 +119,13 @@ export default function Header({
 				</Button>
 				<Button onClick={handleUpdateStatus}>
 					Mark as {invoice.status === 'paid' ? 'Pending' : 'Paid'}
+				</Button>
+				<Button
+					className='bg-paid hover:bg-paid-bg hover:text-paid hidden md:block'
+					onClick={handleDownloadPDF}
+					disabled={isDownloading}>
+					Download PDF
+					{isDownloading && <Spinner />}
 				</Button>
 			</div>
 
