@@ -125,7 +125,6 @@ export default function Header({
 					onClick={handleDownloadPDF}
 					disabled={isDownloading}>
 					Download PDF
-					{isDownloading && <Spinner />}
 				</Button>
 			</div>
 
