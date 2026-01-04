@@ -9,12 +9,11 @@ import { Button } from '@/components/ui/button';
 import { addDays, format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { pdf } from '@react-pdf/renderer';
+import { DownloadIcon } from 'lucide-react';
 
 import InvoiceForm from '@/components/invoice-form';
 import DeleteInvoice from './delete-invoice';
 import InvoicePDF from '@/components/invoice-pdf';
-import Spinner from '@/components/spinner';
-import { DownloadIcon } from 'lucide-react';
 
 export default function Header({
 	position,
@@ -26,7 +25,6 @@ export default function Header({
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [edittingInvoice, setEdittingInvoice] = useState<InvoiceProps | null>(null);
-	const [isDownloading, setIsDownloading] = useState(false);
 
 	const due_date = format(
 		addDays(new Date(invoice.invoice_date), +invoice.payment_terms),
@@ -47,7 +45,6 @@ export default function Header({
 	};
 
 	const handleDownloadPDF = async () => {
-		setIsDownloading(true);
 
 		try {
 			const blob = await pdf(
@@ -62,9 +59,7 @@ export default function Header({
 			URL.revokeObjectURL(url);
 		} catch (error) {
 			console.log(error, 'Failed to download PDF');
-		} finally {
-			setIsDownloading(false);
-		}
+		} 
 	};
 
 	return (
@@ -91,9 +86,8 @@ export default function Header({
 					<Button
 						className='bg-paid hover:bg-paid-bg hover:text-paid md:hidden gap-2'
 						onClick={handleDownloadPDF}
-						disabled={isDownloading}>
+						>
 						<DownloadIcon size={20} /> PDF
-						{isDownloading && <Spinner />}
 					</Button>
 				</div>
 			</div>
@@ -123,7 +117,7 @@ export default function Header({
 				<Button
 					className='bg-paid hover:bg-paid-bg hover:text-paid hidden md:block'
 					onClick={handleDownloadPDF}
-					disabled={isDownloading}>
+					>
 					Download PDF
 				</Button>
 			</div>

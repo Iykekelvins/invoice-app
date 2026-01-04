@@ -650,27 +650,26 @@ export default function InvoiceForm({
 													<td className='px-2 py-2.25 text-15 text-grey-06 font-bold'>
 														{total.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
 													</td>
-													<td className='px-2 py-2.25'>
-														<button
-															type='button'
-															onClick={() => remove(idx)}
-															disabled={items.length === 1}>
-															<svg
-																width='13'
-																height='16'
-																viewBox='0 0 13 16'
-																fill='none'
-																xmlns='http://www.w3.org/2000/svg'>
-																<path
-																	fillRule='evenodd'
-																	clipRule='evenodd'
-																	d='M8.44442 0L9.33333 0.888875H12.4444V2.66667H0V0.888875H3.11108L4 0H8.44442ZM2.66667 16C1.68442 16 0.888875 15.2045 0.888875 14.2222V3.55554H11.5555V14.2222C11.5555 15.2045 10.76 16 9.77779 16H2.66667Z'
-																	fill='#888EB0'
-																	className='transition-all duration-300 ease-in-out hover:fill-red'
-																/>
-															</svg>
-														</button>
-													</td>
+													{items.length > 1 && (
+														<td className='px-2 py-2.25'>
+															<button type='button' onClick={() => remove(idx)}>
+																<svg
+																	width='13'
+																	height='16'
+																	viewBox='0 0 13 16'
+																	fill='none'
+																	xmlns='http://www.w3.org/2000/svg'>
+																	<path
+																		fillRule='evenodd'
+																		clipRule='evenodd'
+																		d='M8.44442 0L9.33333 0.888875H12.4444V2.66667H0V0.888875H3.11108L4 0H8.44442ZM2.66667 16C1.68442 16 0.888875 15.2045 0.888875 14.2222V3.55554H11.5555V14.2222C11.5555 15.2045 10.76 16 9.77779 16H2.66667Z'
+																		fill='#888EB0'
+																		className='transition-all duration-300 ease-in-out hover:fill-red'
+																	/>
+																</svg>
+															</button>
+														</td>
+													)}
 												</tr>
 											);
 										})}
