@@ -4,7 +4,9 @@ import { mutation, query } from './_generated/server';
 // Get all invoices for current user
 export const getInvoices = query({
 	args: {
-		status: v.optional(v.union(v.literal('pending'), v.literal('paid'))),
+		status: v.optional(
+			v.union(v.literal('pending'), v.literal('paid'), v.literal('draft'))
+		),
 	},
 	handler: async (ctx, args) => {
 		const identity = await ctx.auth.getUserIdentity();
@@ -27,14 +29,18 @@ export const getInvoices = query({
 			return await ctx.db
 				.query('invoices')
 				.withIndex('by_user_and_status', (q) =>
-					q.eq('userId', user._id).eq('status', args?.status as 'pending' | 'paid')
+					q
+						.eq('userId', user._id)
+						.eq('status', args?.status as 'pending' | 'paid' | 'draft')
 				)
+				.order('desc')
 				.collect();
 		}
 
 		return await ctx.db
 			.query('invoices')
 			.withIndex('by_user', (q) => q.eq('userId', user._id))
+			.order('desc')
 			.collect();
 	},
 });
@@ -84,7 +90,7 @@ export const createInvoice = mutation({
 		invoice_date: v.number(),
 		payment_terms: v.string(),
 		project_description: v.string(),
-		status: v.union(v.literal('pending'), v.literal('paid')),
+		status: v.union(v.literal('pending'), v.literal('paid'), v.literal('draft')),
 		items: v.array(
 			v.object({
 				item_name: v.string(),
@@ -229,7 +235,7 @@ export const deleteInvoice = mutation({
 export const updateInvoiceStatus = mutation({
 	args: {
 		id: v.id('invoices'),
-		status: v.union(v.literal('pending'), v.literal('paid')),
+		status: v.union(v.literal('pending'), v.literal('paid'), v.literal('draft')),
 	},
 	handler: async (ctx, args) => {
 		const identity = await ctx.auth.getUserIdentity();

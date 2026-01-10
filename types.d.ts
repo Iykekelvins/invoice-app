@@ -17,7 +17,7 @@ interface InvoiceProps {
 	invoice_date: number;
 	payment_terms: string;
 	project_description: string;
-	status: 'pending' | 'paid';
+	status: 'pending' | 'paid' | 'draft';
 	items: {
 		item_name: string;
 		qty: number;

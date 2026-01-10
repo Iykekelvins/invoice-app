@@ -30,7 +30,7 @@ export default defineSchema({
 		payment_terms: v.string(),
 		project_description: v.string(),
 
-		status: v.union(v.literal('pending'), v.literal('paid')),
+		status: v.union(v.literal('pending'), v.literal('paid'), v.literal('draft')),
 
 		items: v.array(
 			v.object({

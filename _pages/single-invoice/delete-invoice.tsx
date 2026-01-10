@@ -52,8 +52,7 @@ export default function DeleteInvoice({
 			<DialogContent showCloseButton={false}>
 				<DialogTitle className='text-2xl font-bold'>Confirm Deletion</DialogTitle>
 				<DialogDescription className='text-grey-06! text-13 font-medium mt-3'>
-					Are you sure you want to delete invoice #XM9141? This action cannot be
-					undone.
+					Are you sure you want to delete this invoice? This action cannot be undone.
 				</DialogDescription>
 
 				<div className='mt-3.5 flex items-center gap-2 justify-end'>

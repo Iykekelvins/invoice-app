@@ -13,8 +13,8 @@ export default function Header({
 	setStatus,
 }: {
 	invoices: InvoiceProps[];
-	status: 'pending' | 'paid' | '';
-	setStatus: (e: 'pending' | 'paid' | '') => void;
+	status: 'pending' | 'paid' | 'draft' | '';
+	setStatus: (e: 'pending' | 'paid' | 'draft' | '') => void;
 }) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 

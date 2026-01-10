@@ -13,7 +13,7 @@ export default function Auth() {
 		<div className='min-h-screen flex-1 flex flex-col items-center justify-center gap-4'>
 			<Image src='/favicon.png' width={60} height={60} alt='app logo' />
 
-			<SignInButton mode='redirect' forceRedirectUrl='/'>
+			<SignInButton mode='modal' forceRedirectUrl='/'>
 				<Button onClick={() => setLoading(true)} disabled={loading}>
 					Sign in with Google
 					{loading && (

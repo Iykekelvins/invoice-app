@@ -15,12 +15,12 @@ export default function Filter({
 	status,
 	setStatus,
 }: {
-	status: 'pending' | 'paid' | '';
-	setStatus: (e: 'pending' | 'paid' | '') => void;
+	status: 'pending' | 'paid' | 'draft' | '';
+	setStatus: (e: 'pending' | 'paid' | 'draft' | '') => void;
 }) {
 	const [open, setOpen] = useState(false);
 
-	const STATUSES = ['pending', 'paid'];
+	const STATUSES = ['pending', 'paid', 'draft'];
 
 	return (
 		<DropdownMenu open={open} onOpenChange={setOpen}>

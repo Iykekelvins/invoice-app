@@ -10,7 +10,7 @@ import Header from './header';
 import Invoice from './invoice';
 
 export default function Main() {
-	const [status, setStatus] = useState<'pending' | 'paid' | ''>('');
+	const [status, setStatus] = useState<'pending' | 'paid' | 'draft' | ''>('');
 
 	const invoices = useQuery(
 		api.invoices.getInvoices,
