@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
 import { getStatusTag } from '@/components/status';
 import { InvoiceProps } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -12,8 +10,10 @@ import { pdf } from '@react-pdf/renderer';
 import { DownloadIcon } from 'lucide-react';
 
 import InvoiceForm from '@/components/invoice-form';
-import DeleteInvoice from './delete-invoice';
 import InvoicePDF from '@/components/invoice-pdf';
+import DeleteInvoice from './modals/delete-invoice';
+import PaidInvoice from './modals/paid-invoice';
+import SendEmail from './modals/send-email';
 
 export default function Header({
 	position,
@@ -24,6 +24,8 @@ export default function Header({
 }) {
 	const [openInvoiceForm, setOpenInvoiceForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [openPaidModal, setOpenPaidModal] = useState(false);
+	const [openEmailModal, setOpenEmailModal] = useState(false);
 	const [edittingInvoice, setEdittingInvoice] = useState<InvoiceProps | null>(null);
 
 	const due_date = format(
@@ -35,17 +37,7 @@ export default function Header({
 		.reduce((sum, item) => sum + item.qty * item.price, 0)
 		.toLocaleString()}`;
 
-	const updateStatus = useMutation(api.invoices.updateInvoiceStatus);
-
-	const handleUpdateStatus = async () => {
-		await updateStatus({
-			id: invoice._id,
-			status: invoice.status === 'paid' ? 'pending' : 'paid',
-		});
-	};
-
 	const handleDownloadPDF = async () => {
-
 		try {
 			const blob = await pdf(
 				<InvoicePDF invoice={{ ...invoice, payment_terms: due_date, amount_due }} />
@@ -59,7 +51,7 @@ export default function Header({
 			URL.revokeObjectURL(url);
 		} catch (error) {
 			console.log(error, 'Failed to download PDF');
-		} 
+		}
 	};
 
 	return (
@@ -85,8 +77,7 @@ export default function Header({
 					{getStatusTag(invoice.status)}
 					<Button
 						className='bg-paid hover:bg-paid-bg hover:text-paid md:hidden gap-2'
-						onClick={handleDownloadPDF}
-						>
+						onClick={handleDownloadPDF}>
 						<DownloadIcon size={20} /> PDF
 					</Button>
 				</div>
@@ -111,13 +102,19 @@ export default function Header({
 					onClick={() => setOpenDeleteModal(true)}>
 					Delete
 				</Button>
-				<Button onClick={handleUpdateStatus}>
-					Mark as {invoice.status === 'paid' ? 'Pending' : 'Paid'}
+				<Button
+					onClick={() => {
+						if (invoice.status === 'draft') {
+							setOpenEmailModal(true);
+						} else {
+							setOpenPaidModal(true);
+						}
+					}}>
+					{invoice.status === 'pending' ? 'Mark as Paid' : 'Send Invoice'}
 				</Button>
 				<Button
 					className='bg-paid hover:bg-paid-bg hover:text-paid hidden md:block'
-					onClick={handleDownloadPDF}
-					>
+					onClick={handleDownloadPDF}>
 					Download PDF
 				</Button>
 			</div>
@@ -132,6 +129,18 @@ export default function Header({
 				openDeleteModal={openDeleteModal}
 				setOpenDeleteModal={setOpenDeleteModal}
 				invoiceId={invoice._id}
+			/>
+
+			<PaidInvoice
+				openPaidModal={openPaidModal}
+				setOpenPaidModal={setOpenPaidModal}
+				invoiceId={invoice._id}
+			/>
+
+			<SendEmail
+				openEmailModal={openEmailModal}
+				setOpenEmailModal={setOpenEmailModal}
+				invoice={invoice}
 			/>
 		</div>
 	);

@@ -126,38 +126,7 @@ const InvoicePDF = ({
 	};
 }) => {
 	// Sample data structure - replace with your actual data
-	const data: InvoiceProps = invoice || {
-		_id: 'XM9141',
-		project_description: 'Graphic Design',
-		bill_from_address: '19 Union Terrace',
-		bill_from_city: 'London',
-		bill_from_post_code: 'E1 3EZ',
-		bill_from_country: 'United Kingdom',
-		invoice_date: '21 Aug 2021',
-		payment_terms: '20 Sep 2021',
-		client_name: 'Alex Grim',
-		client_address: '84 Church Way',
-		client_city: 'Bradford',
-		client_post_code: 'BD1 9PB',
-		client_country: 'United Kingdom',
-		client_email: 'alexgrim@mail.com',
-		items: [
-			{
-				item_name: 'Banner Design',
-				qty: 1,
-				price: 156.0,
-				// total: 156.00,
-			},
-			{
-				item_name: 'Email Design',
-				qty: 2,
-				price: 200.0,
-				// total: 400.00,
-			},
-		],
-		// currency: '£',
-		// totalAmount: 556.00,
-	};
+	const data: InvoiceProps = invoice;
 
 	return (
 		<Document>
@@ -194,10 +163,12 @@ const InvoicePDF = ({
 						<Text style={styles.value}>{data.client_country}</Text>
 					</View>
 
-					<View style={styles.infoBlock}>
-						<Text style={styles.label}>Sent to</Text>
-						<Text style={styles.valueBold}>{data.client_email}</Text>
-					</View>
+					{invoice.status !== 'draft' && (
+						<View style={styles.infoBlock}>
+							<Text style={styles.label}>Sent to</Text>
+							<Text style={styles.valueBold}>{data.client_email}</Text>
+						</View>
+					)}
 				</View>
 
 				<View style={styles.infoSection}>

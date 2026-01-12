@@ -63,11 +63,12 @@ export default function Info({ invoice }: { invoice: InvoiceProps }) {
 						{invoice.client_country}
 					</p>
 				</div>
-
-				<div>
-					<h3 className='text-13 text-grey-07 font-medium'>Sent to</h3>
-					<p className='mt-2 text-15 font-bold'>{invoice.client_email}</p>
-				</div>
+				{invoice.status !== 'draft' && (
+					<div>
+						<h3 className='text-13 text-grey-07 font-medium'>Sent to</h3>
+						<p className='mt-2 text-15 font-bold'>{invoice.client_email}</p>
+					</div>
+				)}
 			</div>
 
 			{/* Item List */}

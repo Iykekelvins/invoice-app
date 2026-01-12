@@ -24,21 +24,20 @@ export async function POST(request: NextRequest) {
 		);
 
 		const sendSmtpEmail = new brevo.SendSmtpEmail();
-		sendSmtpEmail.subject = `Invoice #${invoice._id}`;
+		sendSmtpEmail.subject = `Invoice for ${invoice.project_description} project with ${sender_name}.`;
 		sendSmtpEmail.to = [{ email: invoice.client_email, name: invoice.client_name }];
 		sendSmtpEmail.sender = {
 			email: sender_email,
 			name: sender_name,
 		};
 		sendSmtpEmail.htmlContent = `
-      <h2>Invoice #${invoice._id}</h2>
       <p>Dear ${invoice.client_name},</p>
       <p>Please find attached your invoice for ${amount_due}.</p>
     `;
 		sendSmtpEmail.attachment = [
 			{
 				content: pdfBuffer.toString('base64'),
-				name: `invoice-${invoice.number}.pdf`,
+				name: `invoice-${invoice._id}.pdf`,
 			},
 		];
 
