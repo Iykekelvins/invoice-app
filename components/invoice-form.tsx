@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Form,
@@ -29,6 +30,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
@@ -37,9 +39,10 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon } from 'lucide-react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
+import { InvoiceProps } from '@/types';
 
 import Spinner from './spinner';
-import { InvoiceProps } from '@/types';
+import SendEmailCopy from './send-email-copy';
 
 const message = "can't be empty";
 
@@ -117,6 +120,7 @@ export default function InvoiceForm({
 	invoice?: InvoiceProps | null;
 }) {
 	const router = useRouter();
+	const user = useUser();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -180,6 +184,8 @@ export default function InvoiceForm({
 	const updateInvoice = useMutation(api.invoices.updateInvoice);
 
 	const [loading, setLoading] = useState(false);
+	const [sendEmailCopy, setSendEmailCopy] = useState(false);
+	const [openEmailCopyModal, setOpenEmailCopyModal] = useState(false);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true);
@@ -216,7 +222,22 @@ export default function InvoiceForm({
 					id: invoice._id,
 				});
 
+				if (sendEmailCopy) {
+					await fetch('/api/send-invoice', {
+						headers: {
+							'content-type': 'application/json',
+						},
+						method: 'POST',
+						body: JSON.stringify({
+							invoice,
+							sender_name: user.user?.fullName,
+							sender_email: user.user?.emailAddresses[0].emailAddress,
+						}),
+					});
+				}
+
 				toast.success(result.message);
+				setSendEmailCopy(false);
 				handleDiscard();
 			}
 		} catch (error: any) {
@@ -790,10 +811,38 @@ export default function InvoiceForm({
 					flex items-center justify-between shadow-[0px_10px_20px_0px_#00000040]
 					py-7.5 pl-6 md:pl-14 lg:pl-[9.938rem] pr-6 md:pr-14
 				'>
-					{!invoice && (
+					{!invoice ? (
 						<Button variant={'secondary'} onClick={handleDiscard}>
 							Discard
 						</Button>
+					) : (
+						invoice &&
+						invoice.status === 'pending' && (
+							<div className='flex items-start gap-2 whitespace-nowrap'>
+								<Checkbox
+									id={'send-email-copy'}
+									checked={sendEmailCopy}
+									onCheckedChange={() => {
+										if (!sendEmailCopy) {
+											setOpenEmailCopyModal(true);
+										} else {
+											setSendEmailCopy(false);
+										}
+									}}
+									className={cn(
+										'rounded-xs border-2 border-grey-05 bg-grey-05 size-5',
+										'group-hover:border-purple transition-all duration-300',
+										'[&_svg]:stroke-white [&_svg]:stroke-3',
+										sendEmailCopy && 'border-purple bg-purple'
+									)}
+								/>
+								<label
+									htmlFor={'send-email-copy'}
+									className='text-15 font-bold cursor-pointer'>
+									Send updated copy to client?
+								</label>
+							</div>
+						)
 					)}
 
 					<div className='flex items-center gap-2 justify-end w-full'>
@@ -803,12 +852,19 @@ export default function InvoiceForm({
 							</Button>
 						)}
 						<Button onClick={form.handleSubmit(onSubmit)} disabled={loading}>
-							Save {!invoice ? ' & Send' : 'Changes'}
+							{!invoice ? 'Continue' : 'Save Changes'}
 							{loading && <Spinner />}
 						</Button>
 					</div>
 				</div>
 			</SheetContent>
+
+			<SendEmailCopy
+				invoice={invoice}
+				openEmailCopyModal={openEmailCopyModal}
+				setOpenEmailCopyModal={setOpenEmailCopyModal}
+				setSendEmailCopy={setSendEmailCopy}
+			/>
 		</Sheet>
 	);
 }

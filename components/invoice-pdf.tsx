@@ -1,3 +1,4 @@
+import { formatNumber } from '@/lib/utils';
 import { InvoiceProps } from '@/types';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { format } from 'date-fns';
@@ -196,10 +197,10 @@ const InvoicePDF = ({
 							</Text>
 							<Text style={[styles.tableText, styles.col2]}>{item.qty}</Text>
 							<Text style={[styles.tableText, styles.col3]}>
-								{item.price.toFixed(2).toLocaleString()}
+								{formatNumber(item.price)}
 							</Text>
 							<Text style={[styles.tableTextBold, styles.col4]}>
-								{(item.price * item.qty).toFixed(2).toLocaleString()}
+								{formatNumber(item.price * item.qty)}
 							</Text>
 						</View>
 					))}

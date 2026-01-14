@@ -1,3 +1,4 @@
+import { formatNumber } from '@/lib/utils';
 import { InvoiceProps } from '@/types';
 import { addDays, format } from 'date-fns';
 
@@ -7,9 +8,9 @@ export default function Info({ invoice }: { invoice: InvoiceProps }) {
 		'PP'
 	);
 
-	const amount_due = `N ${invoice.items
-		.reduce((sum, item) => sum + item.qty * item.price, 0)
-		.toLocaleString()}`;
+	const amount_due = `N ${formatNumber(
+		invoice.items.reduce((sum, item) => sum + item.qty * item.price, 0)
+	)}`;
 
 	return (
 		<div
@@ -79,11 +80,11 @@ export default function Info({ invoice }: { invoice: InvoiceProps }) {
 							<div>
 								<h4 className='text-15 font-bold'>{item.item_name}</h4>
 								<p className='text-15 text-grey-07 font-bold mt-1'>
-									{`${item.qty} x N ${item.price.toFixed(2)}`}
+									{`${item.qty} x N ${formatNumber(item.price)}`}
 								</p>
 							</div>
 							<p className='text-15 font-bold'>
-								{`N ${(item.price * item.qty).toFixed(2)}`}
+								{`N ${formatNumber(item.price * item.qty)}`}
 							</p>
 						</li>
 					))}
@@ -114,11 +115,11 @@ export default function Info({ invoice }: { invoice: InvoiceProps }) {
 									{item.qty}
 								</td>
 								<td className='text-grey-07 py-4 text-15 font-bold text-right'>
-									{`N ${item.price.toFixed(2).toLocaleString()}`}
+									{`N ${formatNumber(item.price)}`}
 								</td>
 								<td className='py-4 text-15 font-bold text-right'>
 									{' '}
-									{`N ${(item.price * item.qty).toFixed(2)}`}
+									{`N ${formatNumber(item.price * item.qty)}`}
 								</td>
 							</tr>
 						))}

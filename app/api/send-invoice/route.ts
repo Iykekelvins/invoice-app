@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { generateInvoicePDF } from '@/lib/generateInvoicePDF';
+import { formatNumber } from '@/lib/utils';
 
 import * as brevo from '@getbrevo/brevo';
 
@@ -9,9 +10,9 @@ export async function POST(request: NextRequest) {
 	try {
 		const { invoice, sender_email, sender_name } = await request.json();
 
-		const amount_due = `N ${invoice.items
-			.reduce((sum: any, item: any) => sum + item.qty * item.price, 0)
-			.toLocaleString()}`;
+		const amount_due = `N ${formatNumber(
+			invoice.items.reduce((sum: any, item: any) => sum + item.qty * item.price, 0)
+		)}`;
 
 		// Generate PDF
 		const pdfBuffer = await generateInvoicePDF(invoice);

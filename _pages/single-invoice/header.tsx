@@ -5,7 +5,7 @@ import { getStatusTag } from '@/components/status';
 import { InvoiceProps } from '@/types';
 import { Button } from '@/components/ui/button';
 import { addDays, format } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { cn, formatNumber } from '@/lib/utils';
 import { pdf } from '@react-pdf/renderer';
 import { DownloadIcon } from 'lucide-react';
 
@@ -33,9 +33,9 @@ export default function Header({
 		'PP'
 	);
 
-	const amount_due = `N ${invoice.items
-		.reduce((sum, item) => sum + item.qty * item.price, 0)
-		.toLocaleString()}`;
+	const amount_due = `N ${formatNumber(
+		invoice.items.reduce((sum, item) => sum + item.qty * item.price, 0)
+	)}`;
 
 	const handleDownloadPDF = async () => {
 		try {
