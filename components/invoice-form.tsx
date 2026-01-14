@@ -198,8 +198,8 @@ export default function InvoiceForm({
 					items: values.items.map((item) => {
 						return {
 							item_name: item.item_name,
-							price: +item.price,
-							qty: +item.qty,
+							price: parseInt(item.price),
+							qty: parseInt(item.qty),
 						};
 					}),
 					status: 'draft',
@@ -215,8 +215,8 @@ export default function InvoiceForm({
 					items: values.items.map((item) => {
 						return {
 							item_name: item.item_name,
-							price: +item.price,
-							qty: +item.qty,
+							price: parseInt(item.price),
+							qty: parseInt(item.qty),
 						};
 					}),
 					id: invoice._id,
