@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 const title = 'Invoice app';
-const description = `
-`;
+const description =
+	'A full-stack invoice management application built with Next.js, featuring Google authentication, real-time database syncing, and PDF generation capabilities.';
 export const url = '';
 
 const keywords = [''];
