@@ -223,7 +223,7 @@ export default function InvoiceForm({
 				});
 
 				if (sendEmailCopy) {
-					await fetch('/api/send-invoice', {
+					const res = await fetch('/api/send-invoice', {
 						headers: {
 							'content-type': 'application/json',
 						},
@@ -234,6 +234,10 @@ export default function InvoiceForm({
 							sender_email: user.user?.emailAddresses[0].emailAddress,
 						}),
 					});
+
+					if (!res.ok) {
+						toast.error('Failed to send email. Please try again.');
+					}
 				}
 
 				toast.success(result.message);

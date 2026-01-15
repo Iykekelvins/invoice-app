@@ -45,6 +45,6 @@ export async function POST(request: NextRequest) {
 		const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
 		return NextResponse.json({ success: true, data });
 	} catch (error: any) {
-		return NextResponse.json({ error: error.message }, { status: 500 });
+		return NextResponse.json({ message: error.message }, { status: 500 });
 	}
 }

@@ -59,7 +59,7 @@ export default function SendEmail({
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
-			toast.error(error.message || 'Failed to update invoice status');
+			toast.error(error.message || 'Failed to send email. Please try again.');
 		} finally {
 			setLoading(false);
 		}
