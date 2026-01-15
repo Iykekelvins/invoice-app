@@ -2,14 +2,14 @@
 
 'use client';
 
-import { useConvexAuth } from 'convex/react';
+import { useStoreUserEffect } from '@/lib/useStoreUserEffect';
 import { redirect } from 'next/navigation';
 
 import Spinner from '@/components/spinner';
 
 export const withAuth = (WrappedComponent: any) => {
 	return function WithAuth(props: any) {
-		const { isAuthenticated, isLoading } = useConvexAuth();
+		const { isAuthenticated, isLoading } = useStoreUserEffect();
 
 		if (isLoading) {
 			return (

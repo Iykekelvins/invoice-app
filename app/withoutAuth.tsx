@@ -2,12 +2,12 @@
 
 'use client';
 
-import { useStoreUserEffect } from '@/lib/useStoreUserEffect';
+import { useConvexAuth } from 'convex/react';
 import { redirect } from 'next/navigation';
 
 export const withOutAuth = (WrappedComponent: any) => {
 	return function WithOutAuth(props: any) {
-		const { isAuthenticated, isLoading } = useStoreUserEffect();
+		const { isAuthenticated, isLoading } = useConvexAuth();
 
 		if (isLoading) return;
 
