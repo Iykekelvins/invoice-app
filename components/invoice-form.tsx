@@ -863,12 +863,14 @@ export default function InvoiceForm({
 				</div>
 			</SheetContent>
 
-			<SendEmailCopy
-				invoice={invoice}
-				openEmailCopyModal={openEmailCopyModal}
-				setOpenEmailCopyModal={setOpenEmailCopyModal}
-				setSendEmailCopy={setSendEmailCopy}
-			/>
+			{invoice && (
+				<SendEmailCopy
+					invoice={{ ...invoice, client_email: form.watch('client_email') }}
+					openEmailCopyModal={openEmailCopyModal}
+					setOpenEmailCopyModal={setOpenEmailCopyModal}
+					setSendEmailCopy={setSendEmailCopy}
+				/>
+			)}
 		</Sheet>
 	);
 }
