@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 	title: 'Invoice App',
 	description:
 		'A full-stack invoice management application built with Next.js, featuring Google authentication, real-time database syncing, and PDF generation capabilities.',
-	metadataBase: new URL('https://invoice-app-tau-sage.vercel.app/'),
+	metadataBase: new URL('https://www.iyke-invoice.xyz'),
 	...metaDataOptions,
 };
 

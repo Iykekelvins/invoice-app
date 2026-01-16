@@ -3,9 +3,45 @@ import { Metadata } from 'next';
 const title = 'Invoice app';
 const description =
 	'A full-stack invoice management application built with Next.js, featuring Google authentication, real-time database syncing, and PDF generation capabilities.';
-export const url = '';
+export const url = 'https://www.iyke-invoice.xyz';
 
-const keywords = [''];
+const keywords = [
+	'invoice generator',
+	'invoicing software',
+	'online invoice',
+	'create invoice',
+	'invoice maker',
+	'billing software',
+	'invoice management',
+	'digital invoicing',
+	'freelancer invoice',
+	'small business invoicing',
+	'contractor billing',
+	'consultant invoice',
+	'self-employed invoicing',
+	'send invoice email',
+	'PDF invoice',
+	'invoice tracking',
+	'payment tracking',
+	'invoice templates',
+	'custom invoices',
+	'professional invoices',
+	'invoice automation',
+	'generate invoice online',
+	'email invoice to client',
+	'track payments',
+	'manage clients',
+	'invoice history',
+	'free invoice software',
+	'simple invoicing',
+	'fast invoice creation',
+	'easy billing',
+	'invoice online free',
+	'NextJS invoice app',
+	'web-based invoicing',
+	'cloud invoice software',
+	'invoice SaaS',
+];
 
 export const metaDataOptions: Metadata = {
 	generator: 'Next.js',
