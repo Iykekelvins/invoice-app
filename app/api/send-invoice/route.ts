@@ -8,7 +8,7 @@ import * as brevo from '@getbrevo/brevo';
 
 export async function POST(request: NextRequest) {
 	try {
-		const { invoice, sender_email, sender_name } = await request.json();
+		const { invoice, sender_name } = await request.json();
 
 		const amount_due = `N ${formatNumber(
 			invoice.items.reduce((sum: any, item: any) => sum + item.qty * item.price, 0)
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 		sendSmtpEmail.subject = `Invoice for ${invoice.project_description} project with ${sender_name}.`;
 		sendSmtpEmail.to = [{ email: invoice.client_email, name: invoice.client_name }];
 		sendSmtpEmail.sender = {
-			email: sender_email,
+			email: 'invoices@iyke-invoice.xyz',
 			name: sender_name,
 		};
 		sendSmtpEmail.htmlContent = `
