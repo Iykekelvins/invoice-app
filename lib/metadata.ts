@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const title = 'Invoice app';
+const title = 'Invoice App';
 const description =
 	'A full-stack invoice management application built with Next.js, featuring Google authentication, real-time database syncing, and PDF generation capabilities.';
 export const url = 'https://www.iyke-invoice.xyz';
@@ -37,7 +37,7 @@ const keywords = [
 	'fast invoice creation',
 	'easy billing',
 	'invoice online free',
-	'NextJS invoice app',
+	'NextJS invoice App',
 	'web-based invoicing',
 	'cloud invoice software',
 	'invoice SaaS',
@@ -45,7 +45,7 @@ const keywords = [
 
 export const metaDataOptions: Metadata = {
 	generator: 'Next.js',
-	applicationName: 'Invoice app',
+	applicationName: 'Invoice App',
 	referrer: 'origin-when-cross-origin',
 	keywords,
 	authors: [{ name: 'Kelvin Ochubili', url: 'https://twitter.com/iykekelvins' }],
@@ -60,7 +60,7 @@ export const metaDataOptions: Metadata = {
 		title,
 		description,
 		url,
-		siteName: 'Invoice app',
+		siteName: 'Invoice App',
 		images: [
 			{
 				url: '/opengraph-image.png',
@@ -71,7 +71,7 @@ export const metaDataOptions: Metadata = {
 				url: '/opengraph-image.png',
 				width: 1800,
 				height: 1600,
-				alt: 'Invoice app',
+				alt: 'Invoice App',
 			},
 		],
 		locale: 'en_US',
